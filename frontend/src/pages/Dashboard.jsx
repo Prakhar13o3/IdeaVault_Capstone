@@ -1,0 +1,131 @@
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
+import api from "../services/api";
+import ProjectCard from "../components/ProjectCard";
+import { useNavigate } from "react-router-dom";
+import { FiPlus, FiGrid, FiTrendingUp, FiUser, FiSearch } from "react-icons/fi";
+import "./Dashboard.css";
+
+function Dashboard() {
+  const { token } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const [projects, setProjects] = useState([]);
+  const [stats, setStats] = useState({ total: 0, web: 0, mobile: 0 });
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredProjects = projects.filter(project =>
+    project.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    project.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    project.techStack?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    api
+      .get("/projects")
+      .then((res) => {
+        const projectsData = res.data.projects || res.data;
+        setProjects(projectsData);
+        // Calculate stats
+        const total = projectsData.length;
+        const web = projectsData.filter(p => p.category?.toLowerCase().includes('web')).length;
+        const mobile = projectsData.filter(p => p.category?.toLowerCase().includes('mobile') || p.category?.toLowerCase().includes('app')).length;
+        setStats({ total, web, mobile });
+      })
+      .catch((err) => console.log(err));
+  }, [token, navigate]);
+
+  return (
+    <div className="dashboard-container">
+      <div className="dashboard-header">
+        <div className="header-content">
+          <h1 className="dashboard-title">
+            <FiUser /> Welcome to Your Dashboard
+          </h1>
+          <p className="dashboard-subtitle">Manage and showcase your amazing projects</p>
+        </div>
+        <button
+          className="add-project-btn"
+          onClick={() => navigate("/add-project")}
+        >
+          <FiPlus /> Add New Project
+        </button>
+      </div>
+
+      <div className="stats-grid">
+        <div className="stat-card">
+          <div className="stat-icon">
+            <FiGrid />
+          </div>
+          <div className="stat-content">
+            <h3>{stats.total}</h3>
+            <p>Total Projects</p>
+          </div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-icon">
+            <FiTrendingUp />
+          </div>
+          <div className="stat-content">
+            <h3>{stats.web}</h3>
+            <p>Web Projects</p>
+          </div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-icon">
+            <FiPlus />
+          </div>
+          <div className="stat-content">
+            <h3>{stats.mobile}</h3>
+            <p>Mobile Projects</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="projects-section">
+        <div className="section-header">
+          <h2 className="section-title">
+            <FiGrid /> All Projects
+          </h2>
+          <span className="results-count">{filteredProjects.length} projects</span>
+        </div>
+
+        <div className="filters-section">
+          <div className="search-bar">
+            <FiSearch className="search-icon" />
+            <input
+              type="text"
+              placeholder="Search your projects..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
+            />
+          </div>
+        </div>
+
+        <div className="project-grid">
+          {filteredProjects.length > 0 ? (
+            filteredProjects.map((p) => (
+              <ProjectCard key={p.id} project={p} />
+            ))
+          ) : (
+            <div className="no-projects">
+              <h3>No projects found</h3>
+              <p>Try adjusting your search or add a new project to get started.</p>
+              <button className="add-first-btn" onClick={() => navigate("/add-project")}>
+                <FiPlus /> Add Your First Project
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Dashboard;
