@@ -14,13 +14,13 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  username  String
-  email     String    @unique
-  password  String
-  role      String    @default("user")
-  projects  Project[]
-  createdAt DateTime  @default(now())
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  username   String
+  email      String    @unique
+  password   String
+  role       String    @default("user")
+  projectIds String[]  @db.ObjectId
+  createdAt  DateTime  @default(now())
 }
 
 model Project {
