@@ -33,7 +33,8 @@ const signup = async (req, res) => {
             data: {
                 username: userName,
                 email,
-                password: hashedPassword
+                password: hashedPassword,
+                projectIds: []
             }
         });
 
