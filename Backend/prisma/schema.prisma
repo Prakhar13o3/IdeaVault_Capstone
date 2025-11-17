@@ -24,7 +24,7 @@ model User {
 }
 
 model Project {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String
   techStack   String
@@ -32,7 +32,6 @@ model Project {
   githubLink  String?
   liveDemo    String?
   tags        String?
-  userId      Int
-  user        User      @relation(fields: [userId], references: [id])
-  createdAt   DateTime  @default(now())
+  userId      String   @db.ObjectId
+  createdAt   DateTime @default(now())
 }
