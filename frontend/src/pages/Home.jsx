@@ -14,8 +14,8 @@ function Home() {
       .catch((err) => console.log(err));
   }, []);
 
-  // Show all projects (search removed from hero for a cleaner look)
-  const filteredProjects = projects;
+  // Show only last 5 recently added projects
+  const filteredProjects = projects.slice(0, 5);
 
   return (
     <div className="home-container">
