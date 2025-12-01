@@ -9,22 +9,22 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  username  String
-  email     String    @unique
-  password  String
-  role      String    @default("user")
-  projects  Project[]
-  createdAt DateTime  @default(now())
+  id         String   @id @default(uuid())
+  username   String
+  email      String   @unique
+  password   String
+  role       String   @default("user")
+  projectIds String[]
+  createdAt  DateTime @default(now())
 }
 
 model Project {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(uuid())
   title       String
   description String
   techStack   String
@@ -32,7 +32,6 @@ model Project {
   githubLink  String?
   liveDemo    String?
   tags        String?
-  userId      Int
-  user        User      @relation(fields: [userId], references: [id])
-  createdAt   DateTime  @default(now())
+  userId      String
+  createdAt   DateTime @default(now())
 }
