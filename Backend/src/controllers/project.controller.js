@@ -54,7 +54,7 @@ const getProjectById = async (req,res)=>
     try
     {
         const {id} = req.params;
-        const project = await prisma.project.findUnique({where:{id: parseInt(id)}});
+        const project = await prisma.project.findUnique({where:{id}});
         
         if (!project) {
             return res.status(404).json({ message: 'Project not found' });
@@ -78,7 +78,7 @@ const updateProject = async (req,res)=>
         const {id} = req.params;
         const {title,description,techStack,category,githubLink,liveDemo,tags} = req.body;
         const project = await prisma.project.update({
-            where:{id: parseInt(id)},
+            where:{id},
             data:{title,description,techStack,category,githubLink,liveDemo,tags}
         });
         res.status(200).json({ project, message: 'Project updated successfully' });
