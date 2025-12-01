@@ -13,7 +13,7 @@ const projectRoutes = require('./routes/project.routes');
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.status(200).send('Welcome to IdeaVault Backend API');
 });
 
