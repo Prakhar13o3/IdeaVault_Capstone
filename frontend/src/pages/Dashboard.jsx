@@ -64,7 +64,7 @@ function Dashboard() {
           <h1 className="dashboard-title">
             <FiUser /> {openedUser ? `Welcome to ${openedUser.username}'s Dashboard` : 'Welcome to Your Dashboard'}
           </h1>
-          <p className="dashboard-subtitle">{openedUser ? `View ${openedUser.username}'s projects and stats` : 'Manage and showcase your amazing projects'}</p>
+          <p className="dashboard-subtitle">{openedUser ? `Projects and Stats` : 'Manage and showcase your amazing projects'}</p>
         </div>
         <button
           className="add-project-btn"

@@ -10,7 +10,7 @@ function Footer() {
           <p>Showcase your projects. Collaborate with developers.</p>
         </div>
         <div className="footer-links">
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+          <a href="https://github.com/Prakhar13o3" target="_blank" rel="noopener noreferrer">
             <FaGithub />
           </a>
         </div>

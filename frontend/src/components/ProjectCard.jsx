@@ -38,7 +38,7 @@ function ProjectCard({ project }) {
       {project.ownerName && (
         <div className="card-owner">
           <FiUser className="owner-icon" />
-          <span>By {project.ownerName}</span>
+          <span>Owner : {project.ownerName}</span>
         </div>
       )}
 
