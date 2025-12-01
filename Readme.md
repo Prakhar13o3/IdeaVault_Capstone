@@ -1,38 +1,130 @@
-1. Project Title
-   IdeaVault – A Collaborative Platform for Showcasing and Discovering Innovative Projects.
-2. Problem Statement
-   Students and developers often have creative project ideas but lack a centralized platform to showcase them, gain visibility, or find collaborators. IdeaVault solves this by offering a community-driven web app for sharing, discovering, and teaming up on innovative projects.
-3. System Architecture
-   Layer Technologies
-   Frontend React.js, React Router, Axios, Tailwind CSS
-   Backend Node.js, Express.js, Prisma ORM
-   Database MySQL (Relational Database)
-   Frontend → Backend (API) → Database
-   Frontend React.js with React Router for page navigation
-   Backend Node.js + Express.js with Prisma ORM
-   Database MySQL (Relational Database hosted on PlanetScale/Aiven)
-   Authentication JWT-based login/signup system
-   Hosting Frontend: Vercel | Backend: Render/Railway | Database: PlanetScale
-4. Unique Selling Proposition (USP)
-   Unlike typical project repositories, IdeaVault promotes collaboration and innovation. Users can not only display their projects but also connect with peers who share similar interests or wish to join project teams. It merges creativity, learning, and networking into one platform.
-5. Key Features
-   Category Features
-   Authentication & Authorization User registration, login, logout, and role-based access using JWT
-   CRUD Operations (with API & Database)
-   Searching, Filtering, Sorting, Pagination
-   Frontend Routing Pages: Home, Login, Dashboard, Project Details, Profile
-   Hosting
-   Full Create, Read, Update, Delete operations for projects using RESTful A
-   Efficient project browsing and data management with backend-powered qu
-   Deployed on Vercel (Frontend) and Render (Backend) with PlanetScale/M
-6. Tech Stack
-   Authentication JWT (JSON Web Tokens)
-   Hosting Vercel (Frontend), Render (Backend), PlanetScale (Database)
-7. API Overview
-   Endpoint Method Description Access
-   /api/auth/signup POST Register new user Public
-   /api/auth/login POST Authenticate user Public
-   /api/projects GET Fetch all projects (supports pagination, sorting, filt ering)Authenticated
-   /api/projects POST Create new project via Prisma ORM & MySQL Authenticated
-   /api/projects/:id PUT Update project details Authenticated
-   /api/projects/:id DELETE Delete project Admin only
+# IdeaVault
+
+IdeaVault is a collaborative platform to showcase, discover and collaborate on projects. This README documents the current implementation (frontend + backend) and how to run and extend the app.
+
+## What it solves
+
+Students and developers often have ideas but lack a place to present and find collaborators. IdeaVault provides a lightweight community workspace for listing projects, seeing owners, and connecting with contributors.
+
+## System Architecture
+
+- Frontend: React, React Router, Axios, Vite (plain CSS files used in the repo)
+- Backend: Node.js + Express.js, Prisma ORM
+- Database: PostgreSQL (configured in `prisma/schema.prisma`)
+- Authentication: JWT-based login/signup
+- Hosting examples: Frontend on Vercel, Backend on Render/Railway, Database on PlanetScale/Aiven (optional)
+
+## Key Features (implemented)
+
+- JWT authentication (signup / login)
+- CRUD operations for projects (create, read, update, delete)
+- Project owner displayed (owner username attached to project responses)
+- Project timestamp shown on project cards and details
+- "My Projects" section in Dashboard for the logged-in user
+- Search/filter on Dashboard
+- Responsive UI built with React and plain CSS
+
+## Tech Stack (actual repo)
+
+- Frontend: React, react-router-dom, axios, react-icons, Vite
+- Backend: Node.js, Express, Prisma, PostgreSQL
+- Dev tools: nodemon, eslint
+
+## Quickstart (local)
+
+1. Clone the repo
+
+   git clone <repo-url>
+   cd IdeaVault
+
+2. Backend
+
+   cd Backend
+   npm install
+   cp .env.example .env # fill values
+   npx prisma generate
+   npx prisma migrate dev --name init
+   npm run start
+
+3. Frontend
+
+   cd ../frontend
+   npm install
+   npm run dev
+
+Open the frontend URL shown by Vite (usually http://localhost:5173) and the backend runs on `http://localhost:3000` by default.
+
+## Required environment variables
+
+Create a `.env` file in `Backend/` with at least:
+
+- `DATABASE_URL` — Postgres connection string
+- `JWT_SECRET` — secret for signing access tokens
+- `JWT_REFRESH_SECRET` — (optional) secret for refresh tokens
+- `PORT` — backend port (default 3000)
+
+See `.env.example` (added to the repo) for a template.
+
+## API (examples)
+
+- POST `/api/auth/signup` — register
+
+  - body: `{ username, email, password }`
+  - response: `{ user, accessToken, refreshToken }`
+
+- POST `/api/auth/login` — login
+
+  - body: `{ email, password }`
+  - response: `{ user, accessToken, refreshToken }`
+
+- GET `/api/projects` — list projects
+
+  - headers: `Authorization: Bearer <token>` (routes are protected by `auth` middleware)
+  - response: `{ projects: [ { id, title, description, techStack, category, tags, userId, ownerName, createdAt } ] }`
+
+- POST `/api/projects` — create project (authenticated)
+
+  - body: `{ title, description, techStack, category, githubLink, liveDemo, tags }`
+  - response: created `project` (includes `ownerName` and `createdAt`)
+
+- GET `/api/projects/:id` — single project (includes `ownerName`)
+
+## Data model (Prisma)
+
+- `User` fields: `id`, `username`, `email`, `password`, `role`, `projectIds`, `createdAt`
+- `Project` fields: `id`, `title`, `description`, `techStack`, `category`, `githubLink`, `liveDemo`, `tags`, `userId`, `createdAt`
+
+## UI notes / behavior
+
+- Home page shows the latest 5 projects (most recent first) with owner name and relative timestamp.
+- Dashboard shows metrics and a "My Projects" list for the logged-in user; you can also view another user's dashboard at `/dashboard/:id`.
+- Project cards show owner, tags, tech stack and time since upload.
+
+## Tests & Lint
+
+- Run frontend lint: `cd frontend && npm run lint` (eslint)
+- There are no automated tests configured in the repo currently.
+
+## To improve / TODO suggestions
+
+- Add full pagination support for `/projects` and frontend pagination controls.
+- Add an endpoint `GET /api/auth/me` to validate token and retrieve current user on app load.
+- Add integration or unit tests for backend endpoints.
+- Harden authorization checks (only owners can edit their project, admin-only delete behavior).
+- Add deploy guides and CI configuration.
+
+## Contributing
+
+- Fork, create a branch, implement changes, open a PR with description and testing instructions.
+
+## License
+
+- Add an appropriate open source license file (e.g., MIT) if you plan to open-source.
+
+---
+
+If you want, I can also:
+
+- add a `.env.example` file to the repo now,
+- add API curl/axios snippets for the most-used flows,
+- or create a short `CONTRIBUTING.md` template.
