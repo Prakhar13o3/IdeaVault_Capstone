@@ -8,7 +8,7 @@ import { FiPlus, FiGrid, FiTrendingUp, FiUser, FiSearch } from "react-icons/fi";
 import "./Dashboard.css";
 
 function Dashboard() {
-  const { token } = useContext(AuthContext);
+  const { token, user: authUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const { id: openedId } = useParams();
 
@@ -51,9 +51,11 @@ function Dashboard() {
         .then((res) => setOpenedUser(res.data.user))
         .catch((err) => console.log(err));
     } else {
-      setOpenedUser(null);
+      // if no openedId, show authenticated user's dashboard (if available)
+      if (authUser) setOpenedUser(authUser);
+      else setOpenedUser(null);
     }
-  }, [openedId]);
+  }, [openedId, authUser]);
 
   return (
     <div className="dashboard-container">
@@ -106,16 +108,16 @@ function Dashboard() {
         {openedUser && (
           <div className="section-header">
             <h2 className="section-title">
-              <FiUser /> My Projects
+              <FiUser /> {openedId ? `${openedUser.username}'s Projects` : 'My Projects'}
             </h2>
-            <span className="results-count">{projects.filter(p => p.userId === openedId).length} projects</span>
+            <span className="results-count">{projects.filter(p => p.userId === (openedId || openedUser.id)).length} projects</span>
           </div>
         )}
 
         {openedUser && (
           <div className="project-grid">
-            {projects.filter(p => p.userId === openedId).length > 0 ? (
-              projects.filter(p => p.userId === openedId).map((p) => (
+            {projects.filter(p => p.userId === (openedId || openedUser.id)).length > 0 ? (
+              projects.filter(p => p.userId === (openedId || openedUser.id)).map((p) => (
                 <ProjectCard key={p.id} project={p} />
               ))
             ) : (

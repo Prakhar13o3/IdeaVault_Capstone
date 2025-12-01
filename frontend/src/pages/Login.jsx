@@ -21,7 +21,8 @@ function Login() {
     api
       .post("/auth/login", form)
       .then((res) => {
-        login(res.data.accessToken);
+        // store token and user in context/localStorage
+        login(res.data.accessToken, res.data.user);
         setMsg("Login Successful! Redirecting...");
         setTimeout(() => navigate("/dashboard"), 1500);
       })

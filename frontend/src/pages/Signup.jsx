@@ -20,7 +20,8 @@ function Signup() {
     api
       .post("/auth/signup", form)
       .then((res) => {
-        login(res.data.accessToken);
+        // store token and user in context/localStorage
+        login(res.data.accessToken, res.data.user);
         setMsg("Signup Successful! Redirecting to Dashboard...");
         setTimeout(() => navigate("/dashboard"), 1500);
       })

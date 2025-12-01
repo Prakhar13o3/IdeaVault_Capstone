@@ -21,8 +21,12 @@ const createProject = async (req,res)=>
             }
         });
 
+        // Attach ownerName for frontend convenience
+        const user = await prisma.user.findUnique({ where: { id: userId } });
+        const projectWithOwner = { ...project, ownerName: user ? user.username : 'Unknown' };
+
         res.status(201).json({
-            project,
+            project: projectWithOwner,
             message: 'Project created successfully'
         });
     } catch (err) {

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 import ProjectCard from "../components/ProjectCard";
 import { FiSearch, FiTrendingUp } from "react-icons/fi";
+import { Link } from "react-router-dom";
 import "./Home.css";
 
 function Home() {
@@ -28,8 +29,8 @@ function Home() {
             collaborate with builders around the world.
           </p>
           <div className="hero-actions">
-            <a href="/add-project" className="hero-cta">Add Your Project</a>
-            <a href="/dashboard" className="hero-secondary">Browse Projects</a>
+            <Link to="/add-project" className="hero-cta">Add Your Project</Link>
+            <Link to="/dashboard" className="hero-secondary">Browse Projects</Link>
           </div>
         </div>
         <div className="hero-bg"></div>

@@ -30,6 +30,10 @@ function ProjectDetails() {
       <div className="pd-box">
         <h1>{project.title}</h1>
 
+        {project.ownerName && (
+          <p className="pd-owner"><strong>By:</strong> {project.ownerName}</p>
+        )}
+
         <p className="pd-desc">{project.description}</p>
 
         <p>
