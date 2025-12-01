@@ -30,16 +30,7 @@ function Home() {
           <p className="hero-subtitle">
             Showcase your projects. Explore ideas. Collaborate with developers.
           </p>
-          <div className="search-container">
-            <FiSearch className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search projects..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="search-input"
-            />
-          </div>
+          {/* search input removed from hero section */}
         </div>
         <div className="hero-bg"></div>
       </div>
