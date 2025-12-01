@@ -3,7 +3,7 @@ import { createContext, useState, useEffect } from "react";
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(localStorage.getItem("token") || null);
+  const [token, setToken] = useState(() => localStorage.getItem("token") || null);
   const [user, setUser] = useState(() => {
     try {
       const u = localStorage.getItem("user");
@@ -28,16 +28,6 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
   };
-
-  useEffect(() => {
-    // keep token & user in sync if localStorage changes elsewhere
-    const tok = localStorage.getItem("token");
-    const u = localStorage.getItem("user");
-    if (tok && !token) setToken(tok);
-    if (u && !user) {
-      try { setUser(JSON.parse(u)); } catch (e) { /* ignore */ }
-    }
-  }, []);
 
   return (
     <AuthContext.Provider value={{ token, user, login, logout }}>
