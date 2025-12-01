@@ -6,7 +6,6 @@ import "./Home.css";
 
 function Home() {
   const [projects, setProjects] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     api.get("/projects")
@@ -14,11 +13,8 @@ function Home() {
       .catch((err) => console.log(err));
   }, []);
 
-  const filteredProjects = projects.filter(project =>
-    project.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    project.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    project.techStack?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Show all projects (search removed from hero for a cleaner look)
+  const filteredProjects = projects;
 
   return (
     <div className="home-container">
@@ -28,9 +24,13 @@ function Home() {
             Welcome to <span className="gradient-text">IdeaVault</span>
           </h1>
           <p className="hero-subtitle">
-            Showcase your projects. Explore ideas. Collaborate with developers.
+            Share your best project ideas, discover inspiring work, and
+            collaborate with builders around the world.
           </p>
-          {/* search input removed from hero section */}
+          <div className="hero-actions">
+            <a href="/add-project" className="hero-cta">Add Your Project</a>
+            <a href="/dashboard" className="hero-secondary">Browse Projects</a>
+          </div>
         </div>
         <div className="hero-bg"></div>
       </div>
