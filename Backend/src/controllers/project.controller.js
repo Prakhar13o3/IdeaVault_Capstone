@@ -39,7 +39,16 @@ const getProjects = async (req,res)=>
                 createdAt: 'desc'
             }
         });
-        res.status(200).json({ projects, message: 'Projects fetched successfully' });
+
+        // Attach owner (username) to each project for frontend display
+        const projectsWithOwner = await Promise.all(
+            projects.map(async (p) => {
+                const user = await prisma.user.findUnique({ where: { id: p.userId } });
+                return { ...p, ownerName: user ? user.username : 'Unknown' };
+            })
+        );
+
+        res.status(200).json({ projects: projectsWithOwner, message: 'Projects fetched successfully' });
     } catch (err) {
         console.error('Projects fetching error:', err);
         return res.status(500).json({ 
@@ -55,6 +64,10 @@ const getProjectById = async (req,res)=>
     {
         const {id} = req.params;
         const project = await prisma.project.findUnique({where:{id}});
+        if (project) {
+            const user = await prisma.user.findUnique({ where: { id: project.userId } });
+            project.ownerName = user ? user.username : 'Unknown';
+        }
         
         if (!project) {
             return res.status(404).json({ message: 'Project not found' });

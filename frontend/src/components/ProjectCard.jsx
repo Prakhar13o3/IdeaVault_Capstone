@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { FiEdit, FiExternalLink, FiCode, FiTag } from "react-icons/fi";
+import { FiEdit, FiExternalLink, FiCode, FiTag, FiUser } from "react-icons/fi";
 import "./ProjectCard.css";
 
 function ProjectCard({ project }) {
@@ -17,6 +17,13 @@ function ProjectCard({ project }) {
       <p className="card-description">
         {project.description.substring(0, 120)}...
       </p>
+
+      {project.ownerName && (
+        <div className="card-owner">
+          <FiUser className="owner-icon" />
+          <span>By {project.ownerName}</span>
+        </div>
+      )}
 
       <div className="card-tech">
         <FiCode className="tech-icon" />

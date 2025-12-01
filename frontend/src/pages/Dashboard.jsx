@@ -3,12 +3,16 @@ import { AuthContext } from "../context/AuthContext";
 import api from "../services/api";
 import ProjectCard from "../components/ProjectCard";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { FiPlus, FiGrid, FiTrendingUp, FiUser, FiSearch } from "react-icons/fi";
 import "./Dashboard.css";
 
 function Dashboard() {
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
+  const { id: openedId } = useParams();
+
+  const [openedUser, setOpenedUser] = useState(null);
 
   const [projects, setProjects] = useState([]);
   const [stats, setStats] = useState({ total: 0, web: 0, mobile: 0 });
@@ -40,14 +44,25 @@ function Dashboard() {
       .catch((err) => console.log(err));
   }, [token, navigate]);
 
+  useEffect(() => {
+    // If a specific user's dashboard is opened, fetch their info
+    if (openedId) {
+      api.get(`/users/${openedId}`)
+        .then((res) => setOpenedUser(res.data.user))
+        .catch((err) => console.log(err));
+    } else {
+      setOpenedUser(null);
+    }
+  }, [openedId]);
+
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
         <div className="header-content">
           <h1 className="dashboard-title">
-            <FiUser /> Welcome to Your Dashboard
+            <FiUser /> {openedUser ? `Welcome to ${openedUser.username}'s Dashboard` : 'Welcome to Your Dashboard'}
           </h1>
-          <p className="dashboard-subtitle">Manage and showcase your amazing projects</p>
+          <p className="dashboard-subtitle">{openedUser ? `Projects and activity for ${openedUser.username}` : 'Manage and showcase your amazing projects'}</p>
         </div>
         <button
           className="add-project-btn"
@@ -88,6 +103,30 @@ function Dashboard() {
       </div>
 
       <div className="projects-section">
+        {openedUser && (
+          <div className="section-header">
+            <h2 className="section-title">
+              <FiUser /> My Projects
+            </h2>
+            <span className="results-count">{projects.filter(p => p.userId === openedId).length} projects</span>
+          </div>
+        )}
+
+        {openedUser && (
+          <div className="project-grid">
+            {projects.filter(p => p.userId === openedId).length > 0 ? (
+              projects.filter(p => p.userId === openedId).map((p) => (
+                <ProjectCard key={p.id} project={p} />
+              ))
+            ) : (
+              <div className="no-projects">
+                <h3>No projects by this user</h3>
+                <p>This user hasn't added any projects yet.</p>
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="section-header">
           <h2 className="section-title">
             <FiGrid /> All Projects
