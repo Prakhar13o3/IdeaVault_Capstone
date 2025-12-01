@@ -105,28 +105,57 @@ function Dashboard() {
       </div>
 
       <div className="projects-section">
-        {openedUser && (
-          <div className="section-header">
-            <h2 className="section-title">
-              <FiUser /> {openedId ? `${openedUser.username}'s Projects` : 'My Projects'}
-            </h2>
-            <span className="results-count">{projects.filter(p => p.userId === (openedId || openedUser.id)).length} projects</span>
-          </div>
+        {/* My Projects - always show for logged-in user */}
+        {authUser && !openedId && (
+          <>
+            <div className="section-header">
+              <h2 className="section-title">
+                <FiUser /> My Projects
+              </h2>
+              <span className="results-count">{projects.filter(p => p.userId === authUser.id).length} projects</span>
+            </div>
+
+            <div className="project-grid">
+              {projects.filter(p => p.userId === authUser.id).length > 0 ? (
+                projects.filter(p => p.userId === authUser.id).map((p) => (
+                  <ProjectCard key={p.id} project={p} />
+                ))
+              ) : (
+                <div className="no-projects">
+                  <h3>You haven't added any projects yet</h3>
+                  <p>Start by creating your first project to showcase your work.</p>
+                  <button className="add-first-btn" onClick={() => navigate("/add-project")}>
+                    <FiPlus /> Add Your First Project
+                  </button>
+                </div>
+              )}
+            </div>
+          </>
         )}
 
-        {openedUser && (
-          <div className="project-grid">
-            {projects.filter(p => p.userId === (openedId || openedUser.id)).length > 0 ? (
-              projects.filter(p => p.userId === (openedId || openedUser.id)).map((p) => (
-                <ProjectCard key={p.id} project={p} />
-              ))
-            ) : (
-              <div className="no-projects">
-                <h3>No projects by this user</h3>
-                <p>This user hasn't added any projects yet.</p>
-              </div>
-            )}
-          </div>
+        {/* Other user's projects - show when viewing another user's dashboard */}
+        {openedId && openedUser && (
+          <>
+            <div className="section-header">
+              <h2 className="section-title">
+                <FiUser /> {openedUser.username}'s Projects
+              </h2>
+              <span className="results-count">{projects.filter(p => p.userId === openedId).length} projects</span>
+            </div>
+
+            <div className="project-grid">
+              {projects.filter(p => p.userId === openedId).length > 0 ? (
+                projects.filter(p => p.userId === openedId).map((p) => (
+                  <ProjectCard key={p.id} project={p} />
+                ))
+              ) : (
+                <div className="no-projects">
+                  <h3>No projects by this user</h3>
+                  <p>This user hasn't added any projects yet.</p>
+                </div>
+              )}
+            </div>
+          </>
         )}
 
         <div className="section-header">
