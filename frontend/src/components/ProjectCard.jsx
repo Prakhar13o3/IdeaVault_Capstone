@@ -1,9 +1,26 @@
 import { Link, useNavigate } from "react-router-dom";
-import { FiEdit, FiExternalLink, FiCode, FiTag, FiUser } from "react-icons/fi";
+import { FiEdit, FiExternalLink, FiCode, FiTag, FiUser, FiClock } from "react-icons/fi";
 import "./ProjectCard.css";
 
 function ProjectCard({ project }) {
   const navigate = useNavigate();
+
+  // Format the creation date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return "just now";
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+    
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  };
 
   return (
     <div className="card">
@@ -22,6 +39,13 @@ function ProjectCard({ project }) {
         <div className="card-owner">
           <FiUser className="owner-icon" />
           <span>By {project.ownerName}</span>
+        </div>
+      )}
+
+      {project.createdAt && (
+        <div className="card-date">
+          <FiClock className="date-icon" />
+          <span>{formatDate(project.createdAt)}</span>
         </div>
       )}
 
