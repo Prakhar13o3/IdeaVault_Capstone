@@ -33,7 +33,7 @@ const createMessage = async (req, res) => {
     }
     console.log('---------->>>>>>>>>>>>:', fromUserId, toUserId, projectId, content);
     console.log("------",prisma.message)
-    try {
+    console.log("------",prisma.Message)
       // Create the message
       const message = await prisma.message.create({
         data: {
@@ -43,9 +43,6 @@ const createMessage = async (req, res) => {
           content: content.trim()
         }
       });
-    } catch (error) {
-      console.log("-----------", error)
-    }
 
     // Fetch sender info to include in response
     const sender = await prisma.user.findUnique({ where: { id: fromUserId } });
