@@ -7,6 +7,12 @@ const createMessage = async (req, res) => {
     const fromUserId = req.userId;
     const { toUserId, projectId, content } = req.body;
 
+    console.log('Message creation - fromUserId:', fromUserId, 'body:', req.body);
+
+    if (!fromUserId) {
+      return res.status(401).json({ message: 'User not authenticated' });
+    }
+
     if (!toUserId || !content) {
       return res.status(400).json({ message: 'toUserId and content are required' });
     }
@@ -22,7 +28,7 @@ const createMessage = async (req, res) => {
     res.status(201).json({ message: resp, messageText: 'Message sent' });
   } catch (err) {
     console.error('Create message error:', err);
-    return res.status(500).json({ message: 'Something went wrong while trying to send message' });
+    return res.status(500).json({ message: `Error: ${err.message}` });
   }
 };
 
