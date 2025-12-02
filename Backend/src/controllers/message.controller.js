@@ -17,7 +17,7 @@ const createMessage = async (req, res) => {
       return res.status(401).json({ message: 'Unauthorized: User not authenticated' });
     }
 
-    if (!toUserId || !content || content.trim() === '') {
+    if (!toUserId || !content || typeof content !== 'string' || content.trim() === '') {
       return res.status(400).json({ message: 'toUserId and non-empty content are required' });
     }
 
