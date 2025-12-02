@@ -111,9 +111,11 @@ const getInbox = async (req, res) => {
     });
   } catch (err) {
     console.error('Get inbox error:', err);
+    console.error('Error stack:', err.stack);
     res.status(500).json({
       message: 'Failed to fetch inbox',
-      error: process.env.NODE_ENV === 'development' ? err.message : undefined
+      error: err.message, // Exposed for debugging
+      stack: err.stack    // Exposed for debugging
     });
   }
 };
