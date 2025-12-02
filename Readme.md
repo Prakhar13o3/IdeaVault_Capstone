@@ -12,7 +12,7 @@ Students and developers often have ideas but lack a place to present and find co
 - Backend: Node.js + Express.js, Prisma ORM
 - Database: PostgreSQL (configured in `prisma/schema.prisma`)
 - Authentication: JWT-based login/signup
-- Hosting examples: Frontend on Vercel, Backend on Render/Railway, Database on PlanetScale/Aiven (optional)
+- Hosting backend frontend both on render , db on neondb
 
 ## Key Features (implemented)
 
