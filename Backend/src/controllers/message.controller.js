@@ -32,15 +32,19 @@ const createMessage = async (req, res) => {
       return res.status(404).json({ message: 'Recipient user not found' });
     }
     console.log('---------->>>>>>>>>>>>:', fromUserId, toUserId, projectId, content);
-    // Create the message
-    const message = await prisma.message.create({
-      data: {
-        fromUserId,
-        toUserId,
-        projectId: projectId || null,
-        content: content.trim()
-      }
-    });
+    try {
+      // Create the message
+      const message = await prisma.message.create({
+        data: {
+          fromUserId,
+          toUserId,
+          projectId: projectId || null,
+          content: content.trim()
+        }
+      });
+    } catch (error) {
+      console.log("-----------", error)
+    }
 
     // Fetch sender info to include in response
     const sender = await prisma.user.findUnique({ where: { id: fromUserId } });
