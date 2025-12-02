@@ -38,10 +38,10 @@ model Project {
 
 model Message {
   id         String   @id @default(uuid())
-  fromUserId String
-  toUserId   String
+  fromUserId String?
+  toUserId   String?
   projectId  String?
-  content    String
+  content    String?
   read       Boolean  @default(false)
   createdAt  DateTime @default(now())
 }
