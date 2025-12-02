@@ -1,0 +1,8 @@
+.inbox-container { padding: 20px; }
+.messages-list { display: flex; flex-direction: column; gap: 12px; }
+.message-item { background: rgba(255,255,255,0.04); padding: 12px; border-radius: 8px; }
+.message-header { display:flex; gap:8px; align-items:center; justify-content:space-between; }
+.msg-project { margin-left: 8px; color:#cfcff8; font-size:0.95rem; }
+.msg-time { color:#999; font-size:0.8rem; }
+.message-body { margin-top:8px; color:#e0e0e0; }
+.inbox-msg, .inbox-empty { padding: 20px; color:#e0e0e0; }

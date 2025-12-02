@@ -28,6 +28,9 @@ function Navbar() {
             <Link to="/dashboard" className="nav-link">
               <FiGrid /> Dashboard
             </Link>
+            <Link to="/inbox" className="nav-link">
+              <FiUser /> Inbox
+            </Link>
             <button onClick={handleLogout} className="nav-btn logout">
               <FiLogOut /> Logout
             </button>

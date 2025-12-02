@@ -37,6 +37,11 @@
     font-size: 0.95rem;
   }
 
+  .leave-message { margin-top: 16px; }
+  .message-form textarea { width: 100%; min-height: 100px; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); color: #e0e0e0; }
+  .message-actions { display:flex; gap:8px; margin-top:8px; }
+  .msg-status { margin-top:8px; color:#9ee29e; }
+
 .pd-box::before {
   content: '';
   position: absolute;

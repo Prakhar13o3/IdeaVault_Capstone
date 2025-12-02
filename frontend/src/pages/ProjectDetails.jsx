@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import api from "../services/api";
+import { AuthContext } from "../context/AuthContext";
 import "./ProjectDetails.css";
 
 function ProjectDetails() {
@@ -8,6 +9,10 @@ function ProjectDetails() {
   const [project, setProject] = useState(null); // project data
   const [loading, setLoading] = useState(true); // loading state
   const [error, setError] = useState(null); // error
+  const { user: authUser } = useContext(AuthContext);
+  const [showMessageForm, setShowMessageForm] = useState(false);
+  const [messageText, setMessageText] = useState("");
+  const [msgStatus, setMsgStatus] = useState("");
 
   useEffect(() => {
     api
@@ -72,6 +77,34 @@ function ProjectDetails() {
           >
             Live Demo
           </a>
+        )}
+
+        {/* Leave message button - only show if viewer is not the owner */}
+        {authUser && authUser.id !== project.userId && (
+          <div className="leave-message">
+            {!showMessageForm ? (
+              <button className="pd-btn" onClick={() => setShowMessageForm(true)}>Leave a message</button>
+            ) : (
+              <div className="message-form">
+                <textarea value={messageText} onChange={(e) => setMessageText(e.target.value)} placeholder="Write a message to the project owner..."></textarea>
+                <div className="message-actions">
+                  <button className="pd-btn" onClick={async () => {
+                    if (!messageText.trim()) return setMsgStatus('Message cannot be empty');
+                    try {
+                      await api.post('/messages', { toUserId: project.userId, projectId: project.id, content: messageText });
+                      setMsgStatus('Message sent');
+                      setMessageText('');
+                      setShowMessageForm(false);
+                    } catch (err) {
+                      setMsgStatus(err.response?.data?.message || 'Send failed');
+                    }
+                  }}>Send</button>
+                  <button className="pd-btn secondary" onClick={() => { setShowMessageForm(false); setMessageText(''); setMsgStatus(''); }}>Cancel</button>
+                </div>
+                {msgStatus && <p className="msg-status">{msgStatus}</p>}
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>
