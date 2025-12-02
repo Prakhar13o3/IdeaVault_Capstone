@@ -36,10 +36,31 @@ const createProject = async (req, res) => {
 
 const getProjects = async (req, res) => {
     try {
+        // Parse query parameters
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const category = req.query.category; // e.g., "mobile" or "web"
+
+        // Build where clause for filtering
+        const where = {};
+        if (category) {
+            where.category = {
+                contains: category,
+                mode: 'insensitive' // case-insensitive search
+            };
+        }
+
+        // Get total count for pagination metadata
+        const totalProjects = await prisma.project.count({ where });
+
+        // Fetch paginated projects
         const projects = await prisma.project.findMany({
+            where,
             orderBy: {
                 createdAt: 'desc'
-            }
+            },
+            skip: (page - 1) * limit,
+            take: limit
         });
 
         // Attach owner (username) to each project for frontend display
@@ -50,7 +71,21 @@ const getProjects = async (req, res) => {
             })
         );
 
-        res.status(200).json({ projects: projectsWithOwner, message: 'Projects fetched successfully' });
+        // Calculate pagination metadata
+        const totalPages = Math.ceil(totalProjects / limit);
+        const hasMore = page < totalPages;
+
+        res.status(200).json({
+            projects: projectsWithOwner,
+            pagination: {
+                totalProjects,
+                totalPages,
+                currentPage: page,
+                hasMore,
+                limit
+            },
+            message: 'Projects fetched successfully'
+        });
     } catch (err) {
         console.error('Projects fetching error:', err);
         return res.status(500).json({
