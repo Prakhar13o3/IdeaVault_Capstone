@@ -8,14 +8,17 @@
   animation: fadeIn 0.8s ease-in;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+@media (max-width: 768px) {
+  .edit-container {
+    padding: 15px;
+    min-height: 100vh;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+  .edit-container {
+    padding: 10px;
+    min-height: 100vh;
   }
 }
 
@@ -32,27 +35,17 @@
   overflow: hidden;
 }
 
-.edit-box::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+@media (max-width: 768px) {
+  .edit-box {
+    padding: 30px 25px;
+  }
 }
 
-.edit-box h1 {
-  text-align: center;
-  margin-bottom: 30px;
-  color: #e0e0e0;
-  font-size: 28px;
-  font-weight: 600;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+@media (max-width: 480px) {
+  .edit-box {
+    padding: 20px 15px;
+    border-radius: 16px;
+  }
 }
 
 .edit-box input,
@@ -69,19 +62,6 @@
   transition: all 0.3s ease;
 }
 
-.edit-box input::placeholder,
-.edit-box textarea::placeholder {
-  color: #888;
-}
-
-.edit-box input:focus,
-.edit-box textarea:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
-  background: rgba(255, 255, 255, 0.08);
-}
-
 .edit-box textarea {
   height: 140px;
   resize: vertical;
@@ -92,52 +72,24 @@
   width: 100%;
   padding: 14px;
   font-size: 16px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 12px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  margin-top: 10px;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-}
-
-.edit-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-}
-
-.edit-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.edit-loading {
-  text-align: center;
-  margin-top: 40px;
-  color: #888;
-  font-size: 18px;
-  font-weight: 500;
 }
 
 @media (max-width: 768px) {
-  .edit-container {
-    padding: 15px;
+  .edit-box input,
+  .edit-box textarea {
+    padding: 12px 14px;
   }
+}
 
-  .edit-box {
-    padding: 30px 20px;
+@media (max-width: 480px) {
+  .edit-box input,
+  .edit-box textarea {
+    padding: 10px 12px;
+    margin-bottom: 15px;
   }
-
-  .edit-box h1 {
-    font-size: 24px;
-  }
-
-  .edit-btn {
-    padding: 12px;
-    font-size: 16px;
+  
+  .edit-box textarea {
+    height: 120px;
   }
 }
 

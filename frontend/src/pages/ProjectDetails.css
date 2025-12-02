@@ -8,6 +8,20 @@
   animation: fadeIn 0.8s ease-in;
 }
 
+@media (max-width: 768px) {
+  .pd-container {
+    padding: 30px 15px;
+    min-height: 100vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .pd-container {
+    padding: 20px 10px;
+    min-height: 100vh;
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -31,16 +45,6 @@
   position: relative;
   overflow: hidden;
 }
-  .pd-owner {
-    margin-bottom: 12px;
-    color: #cfcff8;
-    font-size: 0.95rem;
-  }
-
-  .leave-message { margin-top: 16px; }
-  .message-form textarea { width: 100%; min-height: 100px; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); color: #e0e0e0; }
-  .message-actions { display:flex; gap:8px; margin-top:8px; }
-  .msg-status { margin-top:8px; color:#9ee29e; }
 
 .pd-box::before {
   content: '';
@@ -59,6 +63,7 @@
   font-size: 32px;
   font-weight: 700;
   position: relative;
+  word-wrap: break-word;
 }
 
 .pd-box h1::after {
@@ -73,18 +78,43 @@
   border-radius: 2px;
 }
 
+@media (max-width: 768px) {
+  .pd-box {
+    padding: 30px 25px;
+  }
+  
+  .pd-box h1 {
+    font-size: 28px;
+    margin-bottom: 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pd-box {
+    padding: 20px 15px;
+    border-radius: 16px;
+  }
+  
+  .pd-box h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+}
+
 .pd-desc {
   font-size: 18px;
   margin-bottom: 25px;
   color: #b0b0b0;
   line-height: 1.6;
   text-align: justify;
+  word-wrap: break-word;
 }
 
 .pd-box p {
   margin-bottom: 20px;
   font-size: 16px;
   color: #888;
+  word-wrap: break-word;
 }
 
 .pd-box p strong {
@@ -97,6 +127,36 @@
 .pd-box p span {
   color: #667eea;
   font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .pd-desc {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .pd-box p {
+    font-size: 15px;
+    margin-bottom: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pd-desc {
+    font-size: 15px;
+    text-align: left;
+    margin-bottom: 15px;
+  }
+  
+  .pd-box p {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+  
+  .pd-box p strong {
+    display: block;
+    margin-bottom: 4px;
+  }
 }
 
 .pd-btn {
@@ -126,36 +186,73 @@
   box-shadow: 0 8px 25px rgba(86, 171, 47, 0.4);
 }
 
-.pd-loading,
-.pd-error {
-  text-align: center;
-  margin-top: 40px;
-  color: #888;
-  font-size: 18px;
-  font-weight: 500;
+.pd-owner {
+  margin-bottom: 12px;
+  color: #cfcff8;
+  font-size: 0.95rem;
+}
+
+.leave-message {
+  margin-top: 16px;
+}
+
+.message-form textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #e0e0e0;
+  font-size: 16px;
+}
+
+.message-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.msg-status {
+  margin-top: 8px;
+  color: #9ee29e;
+  font-size: 14px;
 }
 
 @media (max-width: 768px) {
-  .pd-container {
-    padding: 20px 15px;
-  }
-
-  .pd-box {
-    padding: 30px 20px;
-  }
-
-  .pd-box h1 {
-    font-size: 28px;
-  }
-
-  .pd-desc {
-    font-size: 16px;
-  }
-
   .pd-btn {
     padding: 10px 20px;
     margin-right: 10px;
     font-size: 14px;
+  }
+  
+  .message-form textarea {
+    min-height: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pd-btn {
+    display: block;
+    padding: 10px 16px;
+    margin-right: 0;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 14px;
+  }
+  
+  .message-form textarea {
+    min-height: 70px;
+    padding: 8px;
+    font-size: 16px;
+  }
+  
+  .message-actions {
+    flex-direction: column;
+  }
+  
+  .message-actions button {
+    width: 100%;
   }
 }
   

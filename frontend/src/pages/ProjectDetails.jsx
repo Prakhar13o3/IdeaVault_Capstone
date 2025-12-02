@@ -89,17 +89,33 @@ function ProjectDetails() {
                 <textarea value={messageText} onChange={(e) => setMessageText(e.target.value)} placeholder="Write a message to the project owner..."></textarea>
                 <div className="message-actions">
                   <button className="pd-btn" onClick={async () => {
-                    if (!messageText.trim()) return setMsgStatus('Message cannot be empty');
+                    if (!messageText.trim()) {
+                      setMsgStatus('Message cannot be empty');
+                      return;
+                    }
                     try {
-                      await api.post('/messages', { toUserId: project.userId, projectId: project.id, content: messageText });
-                      setMsgStatus('Message sent');
+                      setMsgStatus('Sending...');
+                      const response = await api.post('/messages', {
+                        toUserId: project.userId,
+                        projectId: project.id,
+                        content: messageText.trim()
+                      });
+                      setMsgStatus('✓ Message sent successfully!');
                       setMessageText('');
-                      setShowMessageForm(false);
+                      setTimeout(() => {
+                        setShowMessageForm(false);
+                        setMsgStatus('');
+                      }, 1500);
                     } catch (err) {
-                      setMsgStatus(err.response?.data?.message || 'Send failed');
+                      const errMsg = err.response?.data?.message || err.message || 'Failed to send message';
+                      setMsgStatus(`✗ ${errMsg}`);
                     }
                   }}>Send</button>
-                  <button className="pd-btn secondary" onClick={() => { setShowMessageForm(false); setMessageText(''); setMsgStatus(''); }}>Cancel</button>
+                  <button className="pd-btn secondary" onClick={() => {
+                    setShowMessageForm(false);
+                    setMessageText('');
+                    setMsgStatus('');
+                  }}>Cancel</button>
                 </div>
                 {msgStatus && <p className="msg-status">{msgStatus}</p>}
               </div>
