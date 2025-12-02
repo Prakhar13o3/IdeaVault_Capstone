@@ -32,6 +32,7 @@ const createMessage = async (req, res) => {
       return res.status(404).json({ message: 'Recipient user not found' });
     }
     console.log('---------->>>>>>>>>>>>:', fromUserId, toUserId, projectId, content);
+    console.log("------",prisma.message)
     try {
       // Create the message
       const message = await prisma.message.create({

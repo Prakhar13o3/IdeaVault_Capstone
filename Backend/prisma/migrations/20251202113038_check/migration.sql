@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Message" ALTER COLUMN "fromUserId" DROP NOT NULL,
+ALTER COLUMN "toUserId" DROP NOT NULL,
+ALTER COLUMN "content" DROP NOT NULL;
