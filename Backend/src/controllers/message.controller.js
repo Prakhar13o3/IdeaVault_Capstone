@@ -58,7 +58,8 @@ const createMessage = async (req, res) => {
     console.error('Create message error:', err);
     res.status(500).json({
       message: 'Failed to send message',
-      error: process.env.NODE_ENV === 'development' ? err.message : undefined
+      error: err.message, // TEMPORARY: Exposing error for debugging
+      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
     });
   }
 };
